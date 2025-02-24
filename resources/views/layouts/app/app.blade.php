@@ -16,6 +16,13 @@
 
 	<link href="/template/static/css/app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<link href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
+	
+	<style>
+		.min-btn{
+			min-width:100px;
+		}
+	</style>
 </head>
 
 <body>

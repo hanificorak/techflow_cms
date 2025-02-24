@@ -13,6 +13,7 @@ class LoginClass
     public function login(){
         
         try {
+
             $email = request()->get('email');
             $password = request()->get('password');
 

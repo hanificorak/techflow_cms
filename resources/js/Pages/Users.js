@@ -9,6 +9,9 @@ export class Users {
 
     load() {
         this.events();
+
+        $("#usersTable").dataTable();
+
     }
 
     events() {
