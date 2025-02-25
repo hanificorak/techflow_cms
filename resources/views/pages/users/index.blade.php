@@ -16,17 +16,11 @@
                     <th>E-Mail Adresi</th>
                     <th>Telefon Numarası</th>
                     <th>Durumu</th>
-                    <th>İşlem</th>
+                    <th width="150">İşlem</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Hanifi Çorak</td>
-                    <td>hanificorak@outlook.com</td>
-                    <td>05555555</td>
-                    <td>Aktif</td>
-                    <td></td>
-                </tr>
+               
             </tbody>
         </table>
     </div>

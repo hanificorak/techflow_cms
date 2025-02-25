@@ -9,8 +9,9 @@ export class Users {
 
     load() {
         this.events();
+        this.getData();
 
-        $("#usersTable").dataTable();
+        // $("#usersTable").dataTable();
 
     }
 
@@ -18,6 +19,27 @@ export class Users {
         let self = this;
       
 
+    }
+
+    getData() {
+        $('#usersTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/api/users/getData",
+                type: "POST"
+            },
+            columns: [
+                { data: "name", name: "name" },
+                { data: "email", name: "email" },
+                { data: "phone", name: "phone" },
+                { data: "status_name", name: "status_name" },
+                { data: "action", name: "action" },
+
+
+            ],
+            
+        });
     }
 
 

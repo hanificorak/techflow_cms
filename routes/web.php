@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthApiController;
+use App\Http\Controllers\Api\UsersApiController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Pages\PagesController;
 use App\Http\Controllers\Pages\UsersController;
@@ -21,3 +22,5 @@ Route::post('/api/login',[AuthApiController::class,'login']);
 
 Route::get('/dashboard',[PagesController::class,'index'])->name('dashboard')->middleware('auth');
 Route::get('/users',[UsersController::class,'index'])->name('users')->middleware('auth');
+
+Route::post('/api/users/getData',[UsersApiController::class,'getData']);
