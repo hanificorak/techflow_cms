@@ -2,9 +2,11 @@
 
 @section('content')
 
+<h4>Kullanıcı Yönetimi</h4>
+<hr/>
 <div class="card">
     <div class="card-header">
-        <button type="button" class="btn btn-success min-btn">Yeni Ekle</button>
+        <a href="{{ route('users/new') }}"><button type="button" class="btn btn-success min-btn">Yeni Ekle</button></a>
         <button type="button" class="btn btn-primary min-btn">Düzenle</button>
         <button type="button" class="btn btn-danger min-btn">Sil</button>
     </div>
