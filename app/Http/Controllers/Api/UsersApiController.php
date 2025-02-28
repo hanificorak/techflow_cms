@@ -12,4 +12,9 @@ class UsersApiController
         $class = new UsersClass();
         return $class->getData();
     }
+
+    public function saveUser(){
+        $class = new UsersClass();
+        return response()->json($class->saveUser());
+    }
 }
