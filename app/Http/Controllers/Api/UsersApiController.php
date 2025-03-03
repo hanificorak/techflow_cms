@@ -17,4 +17,9 @@ class UsersApiController
         $class = new UsersClass();
         return response()->json($class->saveUser());
     }
+
+    public function delUser(){
+        $class = new UsersClass();
+        return response()->json($class->delUser());
+    }
 }

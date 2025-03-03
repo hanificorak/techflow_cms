@@ -7,8 +7,8 @@
 <div class="card">
     <div class="card-header">
         <a href="{{ route('users/new') }}"><button type="button" class="btn btn-success min-btn">Yeni Ekle</button></a>
-        <button type="button" class="btn btn-primary min-btn">Düzenle</button>
-        <button type="button" class="btn btn-danger min-btn">Sil</button>
+        <button type="button" class="btn btn-primary min-btn editUserBtn">Düzenle</button>
+        <button type="button" class="btn btn-danger min-btn deleteUserBtn">Sil</button>
     </div>
     <div class="card-body">
         <table class="table table-striped table-bordered" id="usersTable">
@@ -39,4 +39,6 @@
             }
         }, 500);
     </script>
+
+    
 @endsection

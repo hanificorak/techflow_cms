@@ -5,6 +5,7 @@ namespace App\Classes;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,8 +26,13 @@ class UsersClass
                     }
                 })
                 ->addColumn('action', function ($user) {
-                    return '<a href="' . route('users/edit', [$user->id]) . '" class="btn btn-primary btn-sm me-2 min-btn-table">Düzenle</a>' . '<a href="#" class="btn btn-danger btn-sm min-btn-table">Sil</a>';
+                    return '<a href="' . route('users/edit', [$user->id]) . '" class="btn btn-primary btn-sm me-2 min-btn-table">Düzenle</a>' . '<a href="#" class="btn btn-danger btn-sm min-btn-table delUserBtn" data-id="' . $user->id . '">Sil</a>';
                 })
+                ->setRowAttr([
+                    'data-id' => function($user) {
+                        return $user->id;
+                    }
+                ])
                 ->make(true);
         } catch (\Throwable $th) {
             return response()->json([
@@ -97,7 +103,6 @@ class UsersClass
 
                     $user->password = Hash::make($password);
                 }
-                
             }
 
 
@@ -110,9 +115,33 @@ class UsersClass
             $user->status = $status;
 
             if ($user->save()) {
-                return ["status" => true, "message" => "Kullanıcı kaydı başarıyla ".($user_id == null ?'gerçekleşti' : 'güncellendi')."."];
+                return ["status" => true, "message" => "Kullanıcı kaydı başarıyla " . ($user_id == null ? 'gerçekleşti' : 'güncellendi') . "."];
             } else {
                 return ["status" => false, "message" => "Kullanıcı kaydı sırasında bir hata oluştu."];
+            }
+        } catch (\Throwable $th) {
+            return ["status" => false, "message" => "Kullanıcı kaydı sırasında bir hata oluştu."];
+        }
+    }
+
+
+    public function delUSer()
+    {
+        try {
+
+            $user_id = request()->get('user_id');
+            if ($user_id == null) {
+                return ["status" => false, "message" => "Parametre bilgileri alınamadı."];
+            }
+
+            if (FacadesAuth::user()->id == $user_id) {
+                return ["status" => false, "message" => "Kendi kullanıcı kaydınızı silemezsiniz."];
+            }
+
+            if (DB::table('users')->where('id', $user_id)->delete()) {
+                return ["status" => true, "message" => "Kullanıcı kaydı başarıyla silindi."];
+            } else {
+                return ["status" => false, "message" => "Kullanıcı kaydı silinirken bir hata oluştu."];
             }
         } catch (\Throwable $th) {
             return ["status" => false, "message" => "Kullanıcı kaydı sırasında bir hata oluştu."];

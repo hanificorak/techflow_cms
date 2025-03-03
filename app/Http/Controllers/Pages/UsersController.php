@@ -15,6 +15,7 @@ class UsersController
     public function new()
     {
 
+        view()->share('user', null);
 
         return view('pages.users.detail');
     }

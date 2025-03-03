@@ -27,3 +27,4 @@ Route::get('/users/edit/{param}',[UsersController::class,'edit'])->name('users/e
 
 Route::post('/api/users/getData',[UsersApiController::class,'getData'])->middleware('auth');
 Route::post('/api/users/saveUser',[UsersApiController::class,'saveUser'])->middleware('auth');
+Route::post('/api/users/delUser',[UsersApiController::class,'delUser'])->middleware('auth');

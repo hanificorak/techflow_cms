@@ -1,6 +1,7 @@
 import jQuery from "jquery";
 window.$ = jQuery;
 
+
 import Swal from "sweetalert2";
 window.Swal = Swal;
 
@@ -15,3 +16,4 @@ $.ajaxSetup({
 
 
 import 'datatables.net';
+import 'datatables.net-select';
