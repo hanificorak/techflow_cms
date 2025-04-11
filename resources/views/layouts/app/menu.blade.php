@@ -22,7 +22,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-sign-in.html">
+                <a class="sidebar-link" href="{{ route('blog') }}">
                     <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blog & Haber</span>
                 </a>
             </li>

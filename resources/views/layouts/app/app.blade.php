@@ -27,6 +27,14 @@
 		.min-btn-table{
 			min-width:50px;
 		}
+
+		.content{
+			padding: 1rem 1rem 0px;
+		}
+
+		.card-border{
+			border-bottom: 1px solid #cdcdcd;
+		}
 	</style>
 </head>
 

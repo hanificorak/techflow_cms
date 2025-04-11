@@ -1,10 +1,18 @@
 @extends('layouts.app.app')
 
 @section('content')
-    <h4>Kullanıcı Kayıt İşlemleri</h4>
-    <hr />
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <h4 class="">Kullanıcı {{ ($user != null ? 'Güncelleme' : 'Kayıt') }} İşlemleri {{ ($user == null ? '' : ' - '. $user->name ) }}</h4>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <span class="badge badge-primary bg-primary float-end p-2" style="font-style: italic;font-weight:600">Sisteme yeni bir kullanıcı ekleyebilir veya düzenleyebilirsiniz.</span>
+
+    </div>
+</div>
+<hr/>
     <div class="card">
-        <div class="card-header">
+        <div class="card-header card-border">
             <a href="{{ route('users') }}"><button type="button" class="btn btn-primary min-btn">Listeye Dön</button></a>
 
             <button type="button" class="btn btn-success min-btn float-end saveUserBtn">Bilgileri Kaydet</button>

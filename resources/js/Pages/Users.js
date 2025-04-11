@@ -49,6 +49,7 @@ export class Users {
             processing: true,
             serverSide: true,
             destroy: true,
+            scrollY: "45vh",
             select: true,
             ajax: {
                 url: "/api/users/getData",

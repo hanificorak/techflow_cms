@@ -1,36 +1,28 @@
+import { Blog } from "./Pages/Blog";
 import { Login } from "./Pages/Login";
 import { Users } from "./Pages/Users";
 
 export class Loader {
+    constructor() {}
 
-    constructor() {
-
-    }
-
-    load(ModuleName = "") {
-
-
-    };
+    load(ModuleName = "") {}
 
     setModule(ModuleName) {
-
-
-        if ($(".menu-page").length)
-            return true;
+        if ($(".menu-page").length) return true;
 
         try {
             if (ModuleName == "") return false;
-            if (eval('app.' + ModuleName + '') != undefined) {
-                eval('app.' + ModuleName + '.load();');
-                return
+            if (eval("app." + ModuleName + "") != undefined) {
+                eval("app." + ModuleName + ".load();");
+                return;
             }
 
             var cls = this.newclass(ModuleName);
             if (cls != null) {
-                eval('app.' + ModuleName + ' = cls;');
-                eval('app.' + ModuleName + '.firstload = true;');
-                eval('app.' + ModuleName + '.eventsload = true;');
-                eval('app.' + ModuleName + '.dropzone = null;');
+                eval("app." + ModuleName + " = cls;");
+                eval("app." + ModuleName + ".firstload = true;");
+                eval("app." + ModuleName + ".eventsload = true;");
+                eval("app." + ModuleName + ".dropzone = null;");
 
                 this.default_settings();
                 return true;
@@ -41,19 +33,20 @@ export class Loader {
             console.error(err);
             return false;
         }
-    };
-
+    }
 
     newclass(ModuleName) {
         switch (ModuleName) {
             case "Login":
                 return new Login();
-                case "Users":
-                    return new Users();
+            case "Users":
+                return new Users();
+            case "Blog":
+                return new Blog();
             default:
                 return null;
         }
-    };
+    }
 
     default_settings() {
         setTimeout(() => {
@@ -63,11 +56,8 @@ export class Loader {
     }
 
     setConfig() {
-        if (this.configset)
-            return;
-
+        if (this.configset) return;
 
         this.configset = true;
-
     }
 }
