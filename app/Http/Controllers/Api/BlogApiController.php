@@ -34,5 +34,10 @@ class BlogApiController
         return $class->save();
     }
 
+    public function getBlogData(){
+        $class = new BlogClass();
+        return $class->getBlogData();
+    }
+
 
 }

@@ -9,6 +9,10 @@ export class Blog {
     load() {
         this.events();
         this.getData();
+
+        if ($(".blog_id").val() != null && $(".blog_id").val() != "") {
+            this.getBlogData();
+        }
     }
 
     events() {
@@ -20,18 +24,21 @@ export class Blog {
             .on("click", ".passiveBtn", function () {
                 const id = $(this).parents("tr").attr("data-id");
                 self.passive(id);
-            }).on("click", ".activeBtn", function () {
+            })
+            .on("click", ".activeBtn", function () {
                 const id = $(this).parents("tr").attr("data-id");
                 self.active(id);
-            }).on("click", ".deleteBtn", function () {
+            })
+            .on("click", ".deleteBtn", function () {
                 const id = $(this).parents("tr").attr("data-id");
                 self.delete(id);
-            }).on("click", ".blogSaveBtn", function () {
-              self.save();
+            })
+            .on("click", ".blogSaveBtn", function () {
+                self.save();
+            })
+            .on("change", ".lang", function () {
+                self.getBlogData();
             });
-
-            
-            
     }
 
     getData() {
@@ -71,7 +78,9 @@ export class Blog {
 
         if (!onay.isConfirmed) return;
 
-        const { data } = await axios.post("/api/blogs/passive", {blog_id: id});
+        const { data } = await axios.post("/api/blogs/passive", {
+            blog_id: id,
+        });
         if (data && data.status) {
             Swal.fire({
                 title: "Bilgi",
@@ -96,7 +105,7 @@ export class Blog {
 
         if (!onay.isConfirmed) return;
 
-        const { data } = await axios.post("/api/blogs/active", {blog_id: id});
+        const { data } = await axios.post("/api/blogs/active", { blog_id: id });
         if (data && data.status) {
             Swal.fire({
                 title: "Bilgi",
@@ -121,7 +130,7 @@ export class Blog {
 
         if (!onay.isConfirmed) return;
 
-        const { data } = await axios.post("/api/blogs/delete", {blog_id: id});
+        const { data } = await axios.post("/api/blogs/delete", { blog_id: id });
         if (data && data.status) {
             Swal.fire({
                 title: "Bilgi",
@@ -134,14 +143,15 @@ export class Blog {
         }
     }
 
-    async save(){
+    async save() {
         const formData = new FormData();
         formData.append("title", $(".title").val());
         formData.append("description", $(".description").val());
         formData.append("type", $(".type").val());
         formData.append("status", $(".status").val());
-        formData.append("content", $(".content").val());
+        formData.append("content", $(".content_text").val());
         formData.append("lang", $(".lang").val());
+        formData.append("blog_id", $(".blog_id").val());
 
         // formData.append("image", $(".image")[0].files[0]);
 
@@ -150,19 +160,39 @@ export class Blog {
                 "Content-Type": "multipart/form-data",
             },
         });
-        if(data && data.status) {
+        if (data && data.status) {
             Swal.fire({
                 title: "Bilgi",
                 text: data.message,
                 icon: "success",
-            }).then(() => {});
-            this.getData();
-        }
-        else {
+            }).then(() => {
+                window.location.href = "/blog";
+            });
+        } else {
             Swal.fire("Hata", data.message, "error");
         }
+    }
 
+    async getBlogData() {
+        const { data } = await axios.post("/api/blogs/getBlogData", {
+            blog_id: $(".blog_id").val(),
+            lang_code: $(".lang").val(),
+        });
 
-
+        if (data && data.status) {
+            if (data.data != null) {
+                $(".title").val(data.data.title);
+                $(".description").val(data.data.description);
+                $(".type").val(data.data.type_id);
+                $(".status").val(data.data.status);
+                $(".content_text").val(data.data.content);
+            } else {
+                $(".title").val("");
+                $(".description").val("");
+                $(".type").val(1);
+                $(".status").val(1);
+                $(".content_text").val("");
+            }
+        }
     }
 }

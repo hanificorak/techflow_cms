@@ -52,7 +52,7 @@ class BlogClass
                     }
                 })
                 ->addColumn('action', function ($blog) {
-                    return '<a href="/" class="btn btn-primary btn-sm me-2 min-btn-table">Düzenle</a>'
+                    return '<a href="' . route('blog/edit', ["id" => $blog->id]) . '" class="btn btn-primary btn-sm me-2 min-btn-table">Düzenle</a>'
                         . '<a href="#" class="btn btn-' . ($blog->status == 1 ? 'warning' : 'success') . ' btn-sm me-2 min-btn-table  ' . ($blog->status == 1 ? 'passiveBtn' : 'activeBtn') . ' " data-id="' . $blog->id . '">' . ($blog->status == 1 ? 'Pasif' : 'Aktif') . ' Yap</a>' .
                         '<a href="#" class="btn btn-danger btn-sm min-btn-table deleteBtn " data-id="' . $blog->id . '">Sil</a>';
                 })
@@ -157,6 +157,7 @@ class BlogClass
             $status = request()->get('status');
             $content = request()->get('content');
             $lang = request()->get('lang');
+            $blog_id = request()->get('blog_id');
 
             if ($title == null) {
                 return ["status" => false, "message" => "Başlık alanı boş geçilemez."];
@@ -164,19 +165,35 @@ class BlogClass
 
             DB::beginTransaction();
 
-            $mdl = new Blogs();
-            $mdl->created_at = Carbon::now();
-            $mdl->updated_at = null;
-            $mdl->create_user_id = FacadesAuth::user()->id;
+            if ($blog_id == null) {
+                $mdl = new Blogs();
+                $mdl->created_at = Carbon::now();
+                $mdl->updated_at = null;
+                $mdl->create_user_id = FacadesAuth::user()->id;
+            } else {
+                $mdl = Blogs::find($blog_id);
+                $mdl->updated_at = Carbon::now();
+                $mdl->update_user_id = FacadesAuth::user()->id;
+            }
+
+
             $mdl->status = $status;
             $mdl->type_id = $type;
 
             if ($mdl->save()) {
 
-                $translate = new BlogsTranslate();
-                $translate->created_at = Carbon::now();
-                $translate->updated_at = null;
-                $translate->create_user_id = FacadesAuth::user()->id;
+
+                $check = BlogsTranslate::where('blog_id', $mdl->id)->where('lang_code', $lang)->first();
+                if ($check != null) {
+                    $translate = BlogsTranslate::find($check->id);
+                    $translate->update_user_id = FacadesAuth::user()->id;
+                    $translate->updated_at = Carbon::now();
+                } else {
+                    $translate = new BlogsTranslate();
+                    $translate->created_at = Carbon::now();
+                    $translate->updated_at = null;
+                    $translate->create_user_id = FacadesAuth::user()->id;
+                }
 
                 $translate->title = $title;
                 $translate->description = $description;
@@ -196,6 +213,32 @@ class BlogClass
         } catch (\Throwable $th) {
             DB::rollBack();
             return ["status" => false, "message" => "İşlem başarısız. " . $th->getMessage()];
+        }
+    }
+
+    public function getBlogData()
+    {
+        try {
+
+            $blog_id = request()->get('blog_id');
+            $lang_code = request()->get('lang_code');
+            if ($lang_code == null) {
+                $lang_code = "tr";
+            }
+
+            if ($blog_id == null) {
+                return ["status" => false, "message" => "Parametre bilgileri alınamadı."];
+            }
+
+            $data = Blogs::join('blogs_translate as bt', 'bt.blog_id', '=', 'blogs.id')
+                ->select('blogs.*', 'bt.title', 'bt.description', 'bt.content')
+                ->where('blogs.id',  $blog_id)
+                ->where('bt.lang_code', $lang_code)
+                ->first();
+
+            return ["status" => true, "data" => $data];
+        } catch (\Throwable $th) {
+            return ["status" => false, "message" => "İşlem başarısız."];
         }
     }
 }

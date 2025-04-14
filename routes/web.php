@@ -26,7 +26,9 @@ Route::get('/dashboard',[PagesController::class,'index'])->name('dashboard')->mi
 Route::get('/users',[UsersController::class,'index'])->name('users')->middleware('auth');
 Route::get('/users/new',[UsersController::class,'new'])->name('users/new')->middleware('auth');
 Route::get('/users/edit/{param}',[UsersController::class,'edit'])->name('users/edit')->middleware('auth');
+Route::get('/blog',[BlogController::class,'index'])->name('blog')->middleware('auth');
 Route::get('/blog/new',[BlogController::class,'new'])->name('blog/new')->middleware('auth');
+Route::get('/blog/edit/{id}',[BlogController::class,'edit'])->name('blog/edit')->middleware('auth');
 
 Route::post('/api/users/getData',[UsersApiController::class,'getData'])->middleware('auth');
 Route::post('/api/users/saveUser',[UsersApiController::class,'saveUser'])->middleware('auth');
@@ -37,6 +39,5 @@ Route::post('/api/blogs/passive',[BlogApiController::class,'passive'])->middlewa
 Route::post('/api/blogs/active',[BlogApiController::class,'active'])->middleware('auth');
 Route::post('/api/blogs/delete',[BlogApiController::class,'delete'])->middleware('auth');
 Route::post('/api/blogs/save',[BlogApiController::class,'save'])->middleware('auth');
+Route::post('/api/blogs/getBlogData',[BlogApiController::class,'getBlogData'])->middleware('auth');
 
-
-Route::get('/blog',[BlogController::class,'index'])->name('blog')->middleware('auth');

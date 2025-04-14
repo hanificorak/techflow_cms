@@ -14,8 +14,13 @@ class BlogController
 
     public function new()
     {
-        
         View::share('blog',null);
+        return view('pages.blog.detail');
+    }
+
+    public function edit($id)
+    {
+        View::share('blog',$id);
         return view('pages.blog.detail');
     }
 
